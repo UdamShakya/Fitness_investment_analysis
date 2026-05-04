@@ -1,317 +1,292 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fitness PE Dashboard</title>
-  <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
-  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,600,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css">
-  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" defer></script>
-  <script src="/static/app.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FitPE Analytics</title>
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
 
-<!-- ── Sidebar ──────────────────────────────────────────────────── -->
+<!-- ── Sidebar ─────────────────────────────────────────── -->
 <aside class="sidebar">
-  <a class="sidebar-logo" href="#">
-    <svg aria-label="Fitness PE Logo" width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <rect width="28" height="28" rx="6" fill="#4f98a3" opacity="0.15"/>
-      <rect x="4" y="13" width="5" height="8" rx="1" fill="#4f98a3"/>
-      <rect x="11" y="9" width="5" height="12" rx="1" fill="#4f98a3" opacity="0.8"/>
-      <rect x="18" y="5" width="5" height="16" rx="1" fill="#4f98a3" opacity="0.6"/>
-      <line x1="6.5" y1="13" x2="6.5" y2="7" stroke="#4f98a3" stroke-width="1.5" stroke-dasharray="2 2"/>
+  <div class="sidebar-brand">
+    <svg aria-label="FitPE Analytics" width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <rect width="32" height="32" rx="8" fill="#4f98a3"/>
+      <path d="M8 16h4v-6h4v12h4V10h4" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <div class="sidebar-logo-text">
-      <strong>FitPE Analytics</strong>
-      <span>Investment Research</span>
+    <div>
+      <div class="brand-name">FitPE Analytics</div>
+      <div class="brand-sub">Investment Research</div>
     </div>
-  </a>
+  </div>
 
-  <nav class="sidebar-nav" aria-label="Main navigation">
-    <div class="nav-section-label">Analysis</div>
-
-    <button class="nav-item" data-tab="overview" aria-label="Overview">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
-        <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
-      </svg>
-      Overview
+  <div class="sidebar-section-label">ANALYSIS</div>
+  <nav>
+    <button class="nav-item active" data-tab="overview">
+      <i data-lucide="layout-dashboard"></i> Overview
     </button>
-
-    <button class="nav-item" data-tab="unit-econ" aria-label="Unit Economics">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-      </svg>
-      Unit Economics
+    <button class="nav-item" data-tab="unit-econ">
+      <i data-lucide="dollar-sign"></i> Unit Economics
     </button>
-
-    <button class="nav-item" data-tab="market" aria-label="Market Sizing">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-      </svg>
-      Market Sizing
+    <button class="nav-item" data-tab="market">
+      <i data-lucide="globe"></i> Market Sizing
     </button>
-
-    <button class="nav-item" data-tab="trends" aria-label="Demand Trends">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-        <polyline points="17 6 23 6 23 12"/>
-      </svg>
-      Demand Trends
+    <button class="nav-item" data-tab="trends">
+      <i data-lucide="trending-up"></i> Demand Trends
     </button>
   </nav>
 
   <div class="sidebar-footer">
-    <div class="last-updated">
-      <strong>Last updated</strong><br>
-      <span id="last-updated-ts">—</span>
-    </div>
+    <div class="sidebar-section-label">Last updated</div>
+    <div id="last-updated-ts" class="brand-sub">—</div>
   </div>
 </aside>
 
-<!-- ── Top bar ───────────────────────────────────────────────────── -->
-<header class="topbar">
-  <h1 class="topbar-title">Overview</h1>
-  <div class="topbar-right">
-    <div class="status-dot" title="Live data connection"></div>
-    <button id="btn-refresh" class="btn-refresh" aria-label="Refresh data">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="23 4 23 10 17 10"/>
-        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
-      </svg>
-      Refresh
-    </button>
-  </div>
-</header>
+<!-- ── Main ───────────────────────────────────────────── -->
+<main class="main">
 
-<!-- ── Main ──────────────────────────────────────────────────────── -->
-<main id="main-content">
+  <!-- Topbar -->
+  <header class="topbar">
+    <h1 class="topbar-title">Overview</h1>
+    <div class="topbar-actions">
+      <div class="live-dot-wrap"><span class="live-dot"></span><span class="live-label">Live</span></div>
+      <button id="btn-refresh" class="btn-refresh" aria-label="Refresh data">
+        <i data-lucide="refresh-cw"></i> Refresh
+      </button>
+    </div>
+  </header>
 
-  <!-- OVERVIEW TAB -->
-  <section id="tab-overview" class="tab-panel" role="tabpanel">
+  <!-- ── TAB: Overview ──────────────────────────────── -->
+  <section id="tab-overview" class="tab-panel active">
 
     <!-- KPI row -->
     <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">HVLP Score</div>
-        <div class="kpi-value" id="score-hvlp">8.5</div>
-        <div class="kpi-sub">out of 10 <span class="kpi-badge up">↑ #1 Rank</span></div>
+      <div class="kpi-card" data-category="hvlp">
+        <div class="kpi-label">HVLP SCORE</div>
+        <div class="kpi-value" data-target="8.5" data-suffix="">0</div>
+        <div class="kpi-sub">out of 10 <span class="badge badge-up">#1 Rank</span></div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Boutique Score</div>
-        <div class="kpi-value" id="score-boutique">7.1</div>
-        <div class="kpi-sub">out of 10 <span class="kpi-badge neu">#2 Rank</span></div>
+      <div class="kpi-card" data-category="boutique">
+        <div class="kpi-label">BOUTIQUE SCORE</div>
+        <div class="kpi-value" data-target="7.1" data-suffix="">0</div>
+        <div class="kpi-sub">out of 10 <span class="badge badge-neutral">#2 Rank</span></div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Digital Score</div>
-        <div class="kpi-value" id="score-digital">3.2</div>
-        <div class="kpi-sub">out of 10 <span class="kpi-badge down">↓ #3 Rank</span></div>
+      <div class="kpi-card" data-category="digital">
+        <div class="kpi-label">DIGITAL SCORE</div>
+        <div class="kpi-value" data-target="3.2" data-suffix="">0</div>
+        <div class="kpi-sub">out of 10 <span class="badge badge-down">#3 Rank</span></div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card" data-category="hvlp">
         <div class="kpi-label">HVLP TAM</div>
-        <div class="kpi-value">$20B</div>
-        <div class="kpi-sub">6.7% CAGR <span class="kpi-badge up">↑ Growing</span></div>
+        <div class="kpi-value" data-target="20" data-prefix="$" data-suffix="B">0</div>
+        <div class="kpi-sub">6.7% CAGR <span class="badge badge-up">Growing</span></div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">PE Capital (HVLP)</div>
-        <div class="kpi-value">$3.5B</div>
+      <div class="kpi-card" data-category="hvlp">
+        <div class="kpi-label">PE CAPITAL (HVLP)</div>
+        <div class="kpi-value" data-target="3.5" data-prefix="$" data-suffix="B">0</div>
         <div class="kpi-sub">2019–2024 deployed</div>
       </div>
-      <div class="kpi-card">
+      <div class="kpi-card" data-category="hvlp">
         <div class="kpi-label">HVLP LTV:CAC</div>
-        <div class="kpi-value">9.4x</div>
-        <div class="kpi-sub">vs 3.3x Digital <span class="kpi-badge up">↑ Best</span></div>
+        <div class="kpi-value" data-target="9.4" data-suffix="x">0</div>
+        <div class="kpi-sub">vs 3.3x Digital <span class="badge badge-up">Best</span></div>
       </div>
     </div>
 
-    <!-- Category pills -->
-    <div class="cat-pills">
-      <span class="cat-pill hvlp">● HVLP — High Volume Low Price</span>
-      <span class="cat-pill boutique">● Boutique Fitness</span>
-      <span class="cat-pill digital">● Digital / Connected</span>
+    <!-- Why Invest cards -->
+    <div class="verdict-row">
+      <div class="verdict-card verdict-hvlp">
+        <div class="verdict-tag">● HVLP — Recommended</div>
+        <ul>
+          <li>9.4x LTV:CAC — best unit economics in class</li>
+          <li>4-month payback period, asset-light franchise model</li>
+          <li>$20B TAM, fastest CAGR, most PE capital deployed</li>
+        </ul>
+      </div>
+      <div class="verdict-card verdict-boutique">
+        <div class="verdict-tag">● Boutique — Viable</div>
+        <ul>
+          <li>45% gross margin — highest of all three</li>
+          <li>Strong brand loyalty, premium pricing power</li>
+          <li>Post-COVID recovery underway, mid-tier risk</li>
+        </ul>
+      </div>
+      <div class="verdict-card verdict-digital">
+        <div class="verdict-tag">● Digital — Avoid</div>
+        <ul>
+          <li>18-month payback, 3.3x LTV:CAC — weakest metrics</li>
+          <li>Peloton down ~95% from peak, high churn post-pandemic</li>
+          <li>PE capital pullback since 2022, demand declining</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Category filter pills -->
+    <div class="pill-row">
+      <button class="pill active" data-filter="all">All Categories</button>
+      <button class="pill" data-filter="hvlp">● HVLP — High Volume Low Price</button>
+      <button class="pill" data-filter="boutique">● Boutique Fitness</button>
+      <button class="pill" data-filter="digital">● Digital / Connected</button>
     </div>
 
     <!-- Charts -->
-    <div class="chart-grid">
+    <div class="chart-grid-2">
       <div class="chart-card">
         <div class="chart-card-header">
           <div>
-            <div class="chart-card-title">Stock Performance</div>
-            <div class="chart-card-sub">PLNT · XPOF · PTON vs S&P 500 — indexed to 100</div>
+            <div class="chart-title">Stock Performance</div>
+            <div class="chart-sub">PLNT · XPOF · PTON vs S&P 500 — indexed to 100</div>
           </div>
+          <button class="btn-icon" data-export="chart-stocks" aria-label="Download chart"><i data-lucide="download"></i></button>
         </div>
-        <div class="chart-wrap" id="chart-stocks"><div class="chart-skeleton"></div></div>
+        <div id="chart-stocks" class="chart-area"><div class="skeleton-chart"></div></div>
       </div>
       <div class="chart-card">
         <div class="chart-card-header">
           <div>
-            <div class="chart-card-title">PE Investment Score</div>
-            <div class="chart-card-sub">Weighted across 7 criteria · max 10</div>
+            <div class="chart-title">PE Investment Score</div>
+            <div class="chart-sub">Weighted across 7 criteria · max 10</div>
           </div>
+          <button class="btn-icon" data-export="chart-scoring" aria-label="Download chart"><i data-lucide="download"></i></button>
         </div>
-        <div class="chart-wrap" id="chart-scoring"><div class="chart-skeleton"></div></div>
+        <div id="chart-scoring" class="chart-area"><div class="skeleton-chart"></div></div>
       </div>
+    </div>
+
+    <!-- Score drill-down panel -->
+    <div id="score-drilldown" class="drilldown-panel hidden">
+      <div class="drilldown-header">
+        <span id="drilldown-title">Score Breakdown</span>
+        <button id="drilldown-close" class="btn-icon" aria-label="Close"><i data-lucide="x"></i></button>
+      </div>
+      <div id="drilldown-body" class="drilldown-body"></div>
     </div>
 
   </section>
 
-  <!-- UNIT ECONOMICS TAB -->
-  <section id="tab-unit-econ" class="tab-panel" role="tabpanel">
-
+  <!-- ── TAB: Unit Economics ──────────────────────────── -->
+  <section id="tab-unit-econ" class="tab-panel">
     <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">HVLP CAC</div>
-        <div class="kpi-value">$75</div>
-        <div class="kpi-sub">4-month payback <span class="kpi-badge up">↑ Best</span></div>
+      <div class="kpi-card" data-category="hvlp">
+        <div class="kpi-label">HVLP LTV:CAC</div>
+        <div class="kpi-value" data-target="9.4" data-suffix="x">0</div>
+        <div class="kpi-sub">4-month payback <span class="badge badge-up">Best</span></div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">HVLP LTV</div>
-        <div class="kpi-value">$705</div>
+      <div class="kpi-card" data-category="boutique">
+        <div class="kpi-label">BOUTIQUE MARGIN</div>
+        <div class="kpi-value" data-target="45" data-suffix="%">0</div>
+        <div class="kpi-sub">Gross margin — highest</div>
+      </div>
+      <div class="kpi-card" data-category="digital">
+        <div class="kpi-label">DIGITAL PAYBACK</div>
+        <div class="kpi-value" data-target="18" data-suffix=" mo">0</div>
+        <div class="kpi-sub">18-month payback <span class="badge badge-down">Worst</span></div>
+      </div>
+      <div class="kpi-card" data-category="hvlp">
+        <div class="kpi-label">HVLP MARGIN</div>
+        <div class="kpi-value" data-target="39.4" data-suffix="%">0</div>
         <div class="kpi-sub">39.4% gross margin</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Digital CAC</div>
-        <div class="kpi-value">$95</div>
-        <div class="kpi-sub">18-month payback <span class="kpi-badge down">↓ Worst</span></div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Digital Gross Margin</div>
-        <div class="kpi-value">8%</div>
-        <div class="kpi-sub">vs 39.4% HVLP <span class="kpi-badge down">↓ Weak</span></div>
-      </div>
     </div>
 
-    <div class="chart-grid full">
-      <div class="chart-card">
-        <div class="chart-card-header">
-          <div>
-            <div class="chart-card-title">Unit Economics Breakdown</div>
-            <div class="chart-card-sub">LTV · CAC · LTV:CAC ratio across all categories</div>
-          </div>
+    <div class="chart-card" style="margin-bottom:var(--space-6)">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-title">Unit Economics Breakdown</div>
+          <div class="chart-sub">LTV · CAC · LTV:CAC ratio across all categories</div>
         </div>
-        <div class="chart-wrap" id="chart-unit-econ"><div class="chart-skeleton"></div></div>
+        <button class="btn-icon" data-export="chart-unit-econ" aria-label="Download chart"><i data-lucide="download"></i></button>
       </div>
+      <div id="chart-unit-econ" class="chart-area"><div class="skeleton-chart"></div></div>
     </div>
 
     <div class="data-table-wrap">
-      <table class="data-table" aria-label="Unit economics data">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>CAC</th>
-            <th>LTV</th>
-            <th>LTV:CAC</th>
-            <th>Gross Margin</th>
-            <th>Payback Period</th>
-          </tr>
-        </thead>
-        <tbody id="ue-tbody">
-          <tr><td colspan="6" style="text-align:center;color:var(--color-text-muted);padding:2rem;">Loading…</td></tr>
-        </tbody>
+      <table class="data-table">
+        <thead><tr>
+          <th>CATEGORY</th><th>CAC</th><th>LTV</th><th>LTV:CAC</th><th>GROSS MARGIN</th><th>PAYBACK PERIOD</th>
+        </tr></thead>
+        <tbody id="ue-tbody"><tr><td colspan="6" class="table-loading">Loading…</td></tr></tbody>
       </table>
     </div>
-
   </section>
 
-  <!-- MARKET SIZING TAB -->
-  <section id="tab-market" class="tab-panel" role="tabpanel">
-
+  <!-- ── TAB: Market Sizing ──────────────────────────── -->
+  <section id="tab-market" class="tab-panel">
     <div class="kpi-grid">
-      <div class="kpi-card">
+      <div class="kpi-card" data-category="hvlp">
         <div class="kpi-label">HVLP TAM</div>
-        <div class="kpi-value">$20B</div>
-        <div class="kpi-sub">Largest market <span class="kpi-badge up">↑ #1</span></div>
+        <div class="kpi-value" data-target="20" data-prefix="$" data-suffix="B">0</div>
+        <div class="kpi-sub">Largest market <span class="badge badge-up">#1</span></div>
+      </div>
+      <div class="kpi-card" data-category="hvlp">
+        <div class="kpi-label">HVLP CAGR</div>
+        <div class="kpi-value" data-target="6.7" data-suffix="%">0</div>
+        <div class="kpi-sub">Fastest growing <span class="badge badge-up">#1</span></div>
       </div>
       <div class="kpi-card">
-        <div class="kpi-label">Boutique CAGR</div>
-        <div class="kpi-value">12.8%</div>
-        <div class="kpi-sub">Fastest growing <span class="kpi-badge up">↑ #1</span></div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">HVLP Members</div>
-        <div class="kpi-value">21M</div>
+        <div class="kpi-label">US GYM MEMBERS</div>
+        <div class="kpi-value" data-target="72" data-suffix="M">0</div>
         <div class="kpi-sub">US total membership</div>
       </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Digital CAGR</div>
-        <div class="kpi-value">3.2%</div>
-        <div class="kpi-sub">Post-COVID slowdown <span class="kpi-badge down">↓ Weak</span></div>
+      <div class="kpi-card" data-category="digital">
+        <div class="kpi-label">DIGITAL CAGR</div>
+        <div class="kpi-value" data-target="3.1" data-suffix="%">0</div>
+        <div class="kpi-sub">Post-COVID slowdown <span class="badge badge-down">Weak</span></div>
       </div>
     </div>
 
-    <div class="chart-grid full">
-      <div class="chart-card">
-        <div class="chart-card-header">
-          <div>
-            <div class="chart-card-title">TAM vs CAGR — Bubble = PE Capital Deployed</div>
-            <div class="chart-card-sub">Bubble size represents total PE capital invested 2019–2024</div>
-          </div>
+    <div class="chart-card" style="margin-bottom:var(--space-6)">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-title">TAM vs CAGR — Bubble = PE Capital Deployed</div>
+          <div class="chart-sub">Bubble size represents total PE capital invested 2019–2024</div>
         </div>
-        <div class="chart-wrap" id="chart-bubble"><div class="chart-skeleton"></div></div>
+        <button class="btn-icon" data-export="chart-bubble" aria-label="Download chart"><i data-lucide="download"></i></button>
       </div>
+      <div id="chart-bubble" class="chart-area"><div class="skeleton-chart"></div></div>
     </div>
 
     <div class="data-table-wrap">
-      <table class="data-table" aria-label="Market sizing data">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>TAM</th>
-            <th>CAGR</th>
-            <th>PE Capital</th>
-            <th>Members</th>
-          </tr>
-        </thead>
-        <tbody id="market-tbody">
-          <tr><td colspan="5" style="text-align:center;color:var(--color-text-muted);padding:2rem;">Loading…</td></tr>
-        </tbody>
+      <table class="data-table">
+        <thead><tr>
+          <th>CATEGORY</th><th>TAM</th><th>CAGR</th><th>PE CAPITAL</th><th>MEMBERS</th>
+        </tr></thead>
+        <tbody id="market-tbody"><tr><td colspan="5" class="table-loading">Loading…</td></tr></tbody>
       </table>
     </div>
-
   </section>
 
-  <!-- DEMAND TRENDS TAB -->
-  <section id="tab-trends" class="tab-panel" role="tabpanel">
-
+  <!-- ── TAB: Demand Trends ──────────────────────────── -->
+  <section id="tab-trends" class="tab-panel">
     <div class="kpi-grid">
-      <div class="kpi-card">
-        <div class="kpi-label">Search Term</div>
-        <div class="kpi-value" style="font-size:var(--text-lg)">planet fitness</div>
-        <div class="kpi-sub">HVLP proxy keyword</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Search Term</div>
-        <div class="kpi-value" style="font-size:var(--text-lg)">boutique fitness</div>
-        <div class="kpi-sub">Boutique proxy keyword</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Search Term</div>
-        <div class="kpi-value" style="font-size:var(--text-lg)">peloton</div>
-        <div class="kpi-sub">Digital proxy keyword</div>
-      </div>
-      <div class="kpi-card">
-        <div class="kpi-label">Data Source</div>
-        <div class="kpi-value" style="font-size:var(--text-lg)">Google</div>
-        <div class="kpi-sub">Trends API · US · 5Y</div>
-      </div>
+      <div class="kpi-card"><div class="kpi-label">SEARCH TERM</div><div class="kpi-value" style="font-size:var(--text-lg)">planet fitness</div><div class="kpi-sub">HVLP proxy keyword</div></div>
+      <div class="kpi-card"><div class="kpi-label">SEARCH TERM</div><div class="kpi-value" style="font-size:var(--text-lg)">boutique<br>fitness</div><div class="kpi-sub">Boutique proxy keyword</div></div>
+      <div class="kpi-card"><div class="kpi-label">SEARCH TERM</div><div class="kpi-value" style="font-size:var(--text-lg)">peloton</div><div class="kpi-sub">Digital proxy keyword</div></div>
+      <div class="kpi-card"><div class="kpi-label">DATA SOURCE</div><div class="kpi-value" style="font-size:var(--text-lg)">Google</div><div class="kpi-sub">Trends API · US · 5Y</div></div>
     </div>
 
-    <div class="chart-grid full">
-      <div class="chart-card">
-        <div class="chart-card-header">
-          <div>
-            <div class="chart-card-title">Google Search Demand — 5 Year Trend</div>
-            <div class="chart-card-sub">Monthly smoothed · Search interest 0–100 · United States</div>
-          </div>
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <div>
+          <div class="chart-title">Google Search Demand — 5 Year Trend</div>
+          <div class="chart-sub">Monthly smoothed · Search interest 0–100 · United States</div>
         </div>
-        <div class="chart-wrap" id="chart-trends"><div class="chart-skeleton"></div></div>
+        <button class="btn-icon" data-export="chart-trends" aria-label="Download chart"><i data-lucide="download"></i></button>
       </div>
+      <div id="chart-trends" class="chart-area chart-area-tall"><div class="skeleton-chart"></div></div>
     </div>
-
   </section>
 
 </main>
+
+<!-- ── Drill-down overlay backdrop ──────────────────── -->
+<div id="backdrop" class="backdrop hidden"></div>
+
+<script src="/static/app.js"></script>
 </body>
 </html>
