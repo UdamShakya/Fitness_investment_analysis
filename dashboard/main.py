@@ -21,6 +21,18 @@ def get_last_updated():
     return datetime.now().strftime("%d %b %Y, %H:%M")
 app = FastAPI(title="Fitness PE Dashboard")
 
+import time
+START_TIME = time.time()
+
+@app.get("/health")
+async def health_check():
+    """Required by Docker HEALTHCHECK and Railway."""
+    return {
+        "status": "ok",
+        "uptime_seconds": round(time.time() - START_TIME, 1),
+        "service": "FitPE Analytics"
+    }
+
 # ── Static & Templates ───────────────────────────────────────────
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
