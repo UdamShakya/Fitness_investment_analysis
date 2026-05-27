@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+venv/
+.venv/
+env/
+analysis/
+*.ipynb
+.ipynb_checkpoints/
+.env
+*.log
+.git/
+.gitignore
+README.md
+ARCHITECTURE.md
+.DS_Store
