@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  fitpe:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: fitpe_analytics
+    ports:
+      - "8000:8000"
+    environment:
+      - PORT=8000
+    volumes:
+      - ./data:/app/data:ro
+    restart: unless-stopped
